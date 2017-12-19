@@ -120,7 +120,7 @@ var NerdeFocus = (function () {
     }
 
     function updateFocus(node){
-        if(node!==undefined){
+        if(node.length){
             $(currentFocus).removeClass('nerdeFocus');
             currentFocus=$(node);
             $(currentFocus).addClass('nerdeFocus');
