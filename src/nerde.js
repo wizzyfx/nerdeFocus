@@ -12,9 +12,10 @@ var NerdeFocus = (function () {
     function main() {
         $("body").append("<section id=\"nerdeFocusRoot\"></section>");
         $("body").append("<div id=\"nerdeFocusOverlay\"></div>");
+
         updateFocus($(':focus'));
         document.addEventListener("focus", function (event) {
-            updateFocus(event.srcElement);
+            updateFocus($(':focus'));
         }, true);
     }
 
@@ -126,11 +127,13 @@ var NerdeFocus = (function () {
             $(currentFocus).addClass('nerdeFocus');
             $('#nerdeFocusRoot').html(getPath(currentFocus));
             $('#nerdeFocusOverlay').css('left',currentFocus.offset().left+'px').css('top',currentFocus.offset().top+'px').css('width',currentFocus.outerWidth()+'px').css('height',currentFocus.outerHeight()+'px');
+        }else{
+            $('#nerdeFocusRoot').html('Focus Reset!');
         }
     }
 
     getResource('https://code.jquery.com/jquery-2.2.4.min.js', function () {
-        getResource('https://rawgit.com/wizzyfx/nerdefocus/master/dist/nerde.min.css', function () {
+        getResource('http://localhost:63342/nerdefocus/dist/nerde.min.css', function () {
             main();
         }, 'css')
     });
