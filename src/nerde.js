@@ -120,11 +120,13 @@ var NerdeFocus = (function () {
     }
 
     function updateFocus(node){
-        $(currentFocus).removeClass('nerdeFocus');
-        currentFocus=$(node);
-        $(currentFocus).addClass('nerdeFocus');
-        $('#nerdeFocusRoot').html(getPath(currentFocus));
-        $('#nerdeFocusOverlay').css('left',currentFocus.offset().left+'px').css('top',currentFocus.offset().top+'px').css('width',currentFocus.outerWidth()+'px').css('height',currentFocus.outerHeight()+'px');
+        if(node){
+            $(currentFocus).removeClass('nerdeFocus');
+            currentFocus=$(node);
+            $(currentFocus).addClass('nerdeFocus');
+            $('#nerdeFocusRoot').html(getPath(currentFocus));
+            $('#nerdeFocusOverlay').css('left',currentFocus.offset().left+'px').css('top',currentFocus.offset().top+'px').css('width',currentFocus.outerWidth()+'px').css('height',currentFocus.outerHeight()+'px');
+        }
     }
 
     getResource('https://code.jquery.com/jquery-2.2.4.min.js', function () {
