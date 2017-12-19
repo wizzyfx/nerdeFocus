@@ -13,7 +13,7 @@ var NerdeFocus = (function () {
         $("body").append("<section id=\"nerdeFocusRoot\"><ol></ol><strong></strong></section>");
         $("body").append("<div id=\"nerdeFocusOverlay\"></div>");
 
-        $("#nerdeFocusRoot span").click(function(){
+        $("#nerdeFocusRoot strong").click(function(){
             $('#nerdeFocusRoot ol').toggle();
         });
 
