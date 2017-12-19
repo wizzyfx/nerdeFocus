@@ -1,0 +1,30 @@
+{
+  "name": "nerdefocus",
+  "version": "1.0.0",
+  "description": "Focus testing bookmarklet",
+  "main": "nerde.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wizzyfx/nerdefocus.git"
+  },
+  "keywords": [
+    "a11y",
+    "focus",
+    "accessibility"
+  ],
+  "author": "Ugurcan K.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wizzyfx/nerdefocus/issues"
+  },
+  "homepage": "https://github.com/wizzyfx/nerdefocus#readme",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-cssmin": "^2.2.1",
+    "grunt-contrib-uglify": "^3.2.1",
+    "grunt-contrib-watch": "^1.0.0"
+  }
+}
