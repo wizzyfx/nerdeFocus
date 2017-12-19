@@ -37,7 +37,9 @@
     list-style-position: inside;
 }
 
-
+#nerdeFocusRoot strong{
+    display: block;
+}
 
 #nerdeFocusOverlay{
     display:none;
