@@ -123,10 +123,10 @@ var NerdeFocus = (function () {
     function updateFocus(node){
         if(node.length){
             $(currentFocus).removeClass('nerdeFocus');
-            currentFocus=$(node);
+            currentFocus=node;
             $(currentFocus).addClass('nerdeFocus');
-            $('#nerdeFocusRoot').html(getPath(currentFocus));
-            $('#nerdeFocusOverlay').css('left',currentFocus.offset().left+'px').css('top',currentFocus.offset().top+'px').css('width',currentFocus.outerWidth()+'px').css('height',currentFocus.outerHeight()+'px');
+            $('#nerdeFocusRoot').html(getPath($(currentFocus)));
+            $('#nerdeFocusOverlay').css('left',$(currentFocus).offset().left+'px').css('top',$(currentFocus).offset().top+'px').css('width',$(currentFocus).outerWidth()+'px').css('height',$(currentFocus).outerHeight()+'px');
         }else{
             $('#nerdeFocusRoot').html('Focus Reset!');
         }
