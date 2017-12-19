@@ -128,7 +128,7 @@ var NerdeFocus = (function () {
     }
 
     getResource('https://code.jquery.com/jquery-2.2.4.min.js', function () {
-        getResource('http://localhost:63342/nerdefocus/dist/nerde.min.css', function () {
+        getResource('https://rawgit.com/wizzyfx/nerdefocus/master/dist/nerde.min.css', function () {
             main();
         }, 'css')
     });
