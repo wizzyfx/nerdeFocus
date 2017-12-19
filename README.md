@@ -7,7 +7,7 @@ Visualize currently focused element.
 Bookmarklet
 
 ```
-javascript:(function(){document.body.appendChild(document.createElement('script')).src='https://rawgit.com/wizzyfx/nerdefocus/dist/nerde.min.js';var iframes=document.getElementsByTagName('iframe');for(i=0;i<iframes.length;i++) {iframes[i].contentDocument.body.appendChild(document.createElement('script')).src='https://rawgit.com/wizzyfx/nerdefocus/dist/nerde.min.js';}})();
+javascript:(function(){document.body.appendChild(document.createElement('script')).src='https://rawgit.com/wizzyfx/nerdefocus/master/dist/nerde.min.js';var iframes=document.getElementsByTagName('iframe');for(i=0;i<iframes.length;i++) {iframes[i].contentDocument.body.appendChild(document.createElement('script')).src='https://rawgit.com/wizzyfx/nerdefocus/master/dist/nerde.min.js';}})();
 ```
 
 ## Authors
