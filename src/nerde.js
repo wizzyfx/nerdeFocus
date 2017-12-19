@@ -10,12 +10,22 @@ var NerdeFocus = (function () {
     var currentFocus;
 
     function main() {
-        $("body").append("<section id=\"nerdeFocusRoot\"></section>");
+        $("body").append("<section id=\"nerdeFocusRoot\"><ol></ol><strong></strong></section>");
         $("body").append("<div id=\"nerdeFocusOverlay\"></div>");
 
-        updateFocus($(':focus'));
-        document.addEventListener("focus", function (event) {
-            updateFocus($(':focus'));
+        $("#nerdeFocusRoot").click(function(){
+            $('#nerdeFocusRoot ol').toggle();
+        });
+
+
+        $("#nerdeFocusOverlay").on('transitionend webkitTransitionEnd oTransitionEnd', function () {
+            $("body").removeClass("nerdeInTransition");
+        });
+
+        updateFocus();
+
+        document.addEventListener("focus", function () {
+            updateFocus();
         }, true);
     }
 
@@ -92,50 +102,56 @@ var NerdeFocus = (function () {
      * https://github.com/yamadapc/jquery-getpath
      */
     function getPath(node) {
-        var path, siblings;
-
+        var path, allSiblings;
         while (node.length) {
-            var realNode = node.get(0);
-            var name = realNode.localName;
-
-            if (realNode.id) {
-                name += '#' + realNode.id;
-            } else if (realNode.className && realNode.className!='nerdeFocus') {
-                name += '.' + realNode.className.replace('nerdeFocus','');
-            }
-
-            if (!name) {break;}
+            var realNode = node[0], name = realNode.localName;
+            if (!name) break;
             name = name.toLowerCase();
-            siblings = node.siblings(name);
-            if (siblings.length > 1) {
-                var index = node.index() + 1;
+
+            var parent = node.parent();
+
+            var sameTagSiblings = parent.children(name);
+
+            if (sameTagSiblings.length > 1) {
+                allSiblings = parent.children();
+                var index = allSiblings.index(realNode) + 1;
                 if (index > 1) {
                     name += ':nth-child(' + index + ')';
                 }
             }
             path = name + (path ? '>' + path : '');
-            node = node.parent();
+            node = parent;
         }
-
         return path;
     }
 
-    function updateFocus(node){
-        if(node.length){
+    function updateFocus() {
+        var node = $(':focus');
+        if (node.length) {
             $(currentFocus).removeClass('nerdeFocus');
-            currentFocus=node;
+            currentFocus = node;
+            if(typeof getPath($(currentFocus)) != 'undefined'){
+                $('#nerdeFocusRoot ol').append('<li>'+getPath($(currentFocus))+'</li>')
+            } else {
+                $('#nerdeFocusRoot ol').append('<li>Focus Lost</li>');
+            };
             $(currentFocus).addClass('nerdeFocus');
-            $('#nerdeFocusRoot').html(getPath($(currentFocus)));
-            $('#nerdeFocusOverlay').css('left',$(currentFocus).offset().left+'px').css('top',$(currentFocus).offset().top+'px').css('width',$(currentFocus).outerWidth()+'px').css('height',$(currentFocus).outerHeight()+'px');
-        }else{
-            $('#nerdeFocusRoot').html('Focus Reset!');
+            $('#nerdeFocusRoot strong').html(getPath($(currentFocus)));
+            $("body").addClass("nerdeInTransition");
+            $('#nerdeFocusOverlay').css('left', ($(currentFocus).offset().left) + 'px').css('top', ($(currentFocus).offset().top) + 'px').css('width', $(currentFocus).outerWidth() + 'px').css('height', $(currentFocus).outerHeight() + 'px');
+        } else {
+            $('#nerdeFocusRoot strong').html('Focus Reset!');
         }
     }
 
-    getResource('https://code.jquery.com/jquery-2.2.4.min.js', function () {
-        getResource('https://rawgit.com/wizzyfx/nerdefocus/master/dist/nerde.min.css', function () {
+    getResource('https://uk-serve.net/apps/nerde/nerde.css', function () {
+        if (window.jQuery) {
             main();
-        }, 'css')
-    });
+        } else {
+            getResource('https://code.jquery.com/jquery-2.2.4.min.js', function () {
+                main();
+            });
+        }
+    }, 'css');
 
 })();

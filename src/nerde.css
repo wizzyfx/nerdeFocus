@@ -21,16 +21,42 @@
     overflow: hidden;
     z-index: 99998;
     padding: 0.25rem;
-    border:0.1rem solid #ccc
+    border:0.1rem solid #ccc;
+    cursor: pointer;
 }
 
+#nerdeFocusRoot ol{
+    display: none;
+    font-size: 85%;
+    height: 15rem;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    margin: 0 0 0.25rem 0;
+    padding: 0 0 0.25rem 0;
+    border-bottom: 1px solid white;
+    list-style-position: inside;
+}
+
+
+
 #nerdeFocusOverlay{
+    display:none;
     background-color: rgba(255,0,0,0.2);
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 0;
     height: 0;
+    outline: 0.25rem solid rgba(255,0,0,0.5);
+    outline-offset:0.1rem;
     z-index: 99997;
-    transition: top 0.25s, left 0.25s, width 0.25s, height 0.25s;
+    transition: top 0.25s ease-in-out, left 0.25s ease-in-out, width 0.25s ease-in-out, height 0.25s ease-in-out;
+}
+
+body.nerdeInTransition #nerdeFocusOverlay{
+    display:block!important;
+}
+
+body.nerdeInTransition .nerdeFocus{
+    outline: none!important;;
 }
