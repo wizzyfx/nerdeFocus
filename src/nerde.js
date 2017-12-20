@@ -13,7 +13,7 @@ var NerdeFocus = (function () {
         $("body").append("<section id=\"nerdeFocusRoot\"><ol></ol><strong></strong></section>");
         $("body").append("<div id=\"nerdeFocusOverlay\"></div>");
 
-        $("#nerdeFocusRoot strong").click(function(){
+        $("#nerdeFocusRoot strong").click(function () {
             $('#nerdeFocusRoot ol').toggle();
         });
 
@@ -105,11 +105,18 @@ var NerdeFocus = (function () {
         var path, allSiblings;
         while (node.length) {
             var realNode = node[0], name = realNode.localName;
-            if (!name) break;
+            if (!name) {
+                break;
+            }
             name = name.toLowerCase();
 
-            var parent = node.parent();
+            if (realNode.id && $('#' + realNode.id).length === 1) {
+                name = '#' + realNode.id;
+                path = name + (path ? '>' + path : '');
+                break;
+            }
 
+            var parent = node.parent();
             var sameTagSiblings = parent.children(name);
 
             if (sameTagSiblings.length > 1) {
@@ -119,22 +126,25 @@ var NerdeFocus = (function () {
                     name += ':nth-child(' + index + ')';
                 }
             }
+
             path = name + (path ? '>' + path : '');
             node = parent;
         }
         return path;
     }
 
+
     function updateFocus() {
         var node = $(':focus');
         if (node.length) {
             $(currentFocus).removeClass('nerdeFocus');
             currentFocus = node;
-            if(typeof getPath($(currentFocus)) != 'undefined'){
-                $('#nerdeFocusRoot ol').append('<li>'+getPath($(currentFocus))+'</li>')
+            if (typeof getPath($(currentFocus)) != 'undefined') {
+                $('#nerdeFocusRoot ol').append('<li>' + getPath($(currentFocus)) + '</li>');
             } else {
                 $('#nerdeFocusRoot ol').append('<li>Focus Lost</li>');
-            };
+            }
+            ;
             $(currentFocus).addClass('nerdeFocus');
             $('#nerdeFocusRoot strong').html(getPath($(currentFocus)));
             $("body").addClass("nerdeInTransition");
@@ -144,7 +154,10 @@ var NerdeFocus = (function () {
         }
     }
 
-    getResource('https://rawgit.com/wizzyfx/nerdefocus/master/dist/nerde.min.css', function () {
+    /* https://rawgit.com/wizzyfx/nerdefocus/master/dist/nerde.min.css */
+    /* https://uk-serve.net/apps/nerde/nerde.css */
+
+    getResource('https://uk-serve.net/apps/nerde/nerde.css', function () {
         if (window.jQuery) {
             main();
         } else {
