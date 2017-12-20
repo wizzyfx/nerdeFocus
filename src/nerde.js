@@ -154,10 +154,7 @@ var NerdeFocus = (function () {
         }
     }
 
-    /* https://rawgit.com/wizzyfx/nerdefocus/master/dist/nerde.min.css */
-    /* https://uk-serve.net/apps/nerde/nerde.css */
-
-    getResource('https://uk-serve.net/apps/nerde/nerde.css', function () {
+    getResource('https://rawgit.com/wizzyfx/nerdefocus/master/dist/nerde.min.css', function () {
         if (window.jQuery) {
             main();
         } else {
