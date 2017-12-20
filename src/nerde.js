@@ -144,7 +144,6 @@ var NerdeFocus = (function () {
             } else {
                 $('#nerdeFocusRoot ol').append('<li>Focus Lost</li>');
             }
-            ;
             $(currentFocus).addClass('nerdeFocus');
             $('#nerdeFocusRoot strong').html(getPath($(currentFocus)));
             $("body").addClass("nerdeInTransition");
