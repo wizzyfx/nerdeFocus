@@ -48,7 +48,7 @@
 
 #nerdeFocusOverlay{
     display:none;
-    background-color: rgba(255,0,0,0.2);
+    background: none;
     position: absolute;
     top: 0;
     left: 0;

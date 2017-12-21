@@ -10,23 +10,25 @@ var NerdeFocus = (function () {
     var currentFocus;
 
     function main() {
-        $("body").append("<section id=\"nerdeFocusRoot\"><ol></ol><strong></strong></section>");
-        $("body").append("<div id=\"nerdeFocusOverlay\"></div>");
+        if($("#nerdeFocusRoot").length===0){
+            $("body").append("<section id=\"nerdeFocusRoot\"><ol></ol><strong></strong></section>");
+            $("body").append("<div id=\"nerdeFocusOverlay\"></div>");
 
-        $("#nerdeFocusRoot strong").click(function () {
-            $('#nerdeFocusRoot ol').toggle();
-        });
+            $("#nerdeFocusRoot strong").click(function () {
+                $('#nerdeFocusRoot ol').toggle();
+            });
 
 
-        $("#nerdeFocusOverlay").on('transitionend webkitTransitionEnd oTransitionEnd', function () {
-            $("body").removeClass("nerdeInTransition");
-        });
+            $("#nerdeFocusOverlay").on('transitionend webkitTransitionEnd oTransitionEnd', function () {
+                $("body").removeClass("nerdeInTransition");
+            });
 
-        updateFocus();
-
-        document.addEventListener("focus", function () {
             updateFocus();
-        }, true);
+
+            document.addEventListener("focus", function () {
+                updateFocus();
+            }, true);
+        }
     }
 
     /**
@@ -144,12 +146,24 @@ var NerdeFocus = (function () {
         return false;
     }
 
+    function isInViewPort(node) {
+        var elementTop = $(node).offset().top;
+        var elementLeft = $(node).offset().left;
+        var elementBottom = elementTop + $(node).outerHeight();
+        var elementRight = elementLeft + $(node).outerWidth();
+        var viewportTop = $(window).scrollTop();
+        var viewportBottom = viewportTop + $(window).height();
+        var viewportRight = $(window).width();
+        return elementBottom > viewportTop && elementTop < viewportBottom && elementRight > 0 && elementLeft < viewportRight;
+    };
+
 
     function updateFocus() {
         var node = $(':focus');
         if (node.length) {
             $(currentFocus).removeClass('nerdeFocus');
             currentFocus = node;
+
             if (typeof getPath($(currentFocus)) != 'undefined') {
                 $('#nerdeFocusRoot ol').append('<li>' + getPath($(currentFocus)) + '</li>');
             } else {
@@ -157,10 +171,27 @@ var NerdeFocus = (function () {
             }
             $(currentFocus).addClass('nerdeFocus');
 
-            if(isVisuallyHidden($(currentFocus))){$("body").addClass("nerdeFocusHidden");}
             $('#nerdeFocusRoot strong').html(getPath($(currentFocus)));
+
             $("body").addClass("nerdeInTransition");
-            $('#nerdeFocusOverlay').css('left', ($(currentFocus).offset().left) + 'px').css('top', ($(currentFocus).offset().top) + 'px').css('width', $(currentFocus).outerWidth() + 'px').css('height', $(currentFocus).outerHeight() + 'px');
+
+            var elementTop = $(currentFocus).offset().top;
+            var elementLeft = $(currentFocus).offset().left;
+            var elementBottom = elementTop + $(currentFocus).outerHeight();
+            var elementRight = elementLeft + $(currentFocus).outerWidth();
+            var viewportTop = $(window).scrollTop();
+            var viewportBottom = viewportTop + $(window).height();
+            var viewportRight = $(window).width();
+
+            if(isVisuallyHidden($(currentFocus)) || !(elementBottom > viewportTop && elementTop < viewportBottom && elementRight > 0 && elementLeft < viewportRight)){
+                $("body").addClass("nerdeFocusHidden");
+            }
+
+            if(elementLeft > viewportRight){elementLeft = viewportRight;}
+            if(elementTop > viewportBottom){elementTop = viewportBottom;}
+
+            $('#nerdeFocusOverlay').css('left', elementLeft + 'px').css('top', elementTop + 'px').css('width', $(currentFocus).outerWidth() + 'px').css('height', $(currentFocus).outerHeight() + 'px');
+
         } else {
             $('#nerdeFocusRoot strong').html('Focus Reset!');
         }
