@@ -20,7 +20,7 @@
     width: 50%;
     border-radius: 0.25em;
     overflow: hidden;
-    z-index: 99998;
+    z-index: 9999998;
     padding: 0.5em;
     border:0.1em solid #ccc;
 }
@@ -56,12 +56,17 @@
     height: 0;
     outline: 0.25em solid rgba(255,0,0,0.5);
     outline-offset:0.1rem;
-    z-index: 99997;
+    z-index: 9999997;
     transition: top 0.25s ease-in-out, left 0.25s ease-in-out, width 0.25s ease-in-out, height 0.25s ease-in-out;
 }
 
 body.nerdeInTransition #nerdeFocusOverlay{
     display:block!important;
+}
+
+body.nerdeFocusHidden #nerdeFocusOverlay{
+    display:block!important;
+    background: none!important;
 }
 
 body.nerdeInTransition .nerdeFocus{

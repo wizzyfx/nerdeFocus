@@ -133,6 +133,17 @@ var NerdeFocus = (function () {
         return path;
     }
 
+    function isVisuallyHidden(node) {
+        while (node.length) {
+            var realNode = node[0];
+            if($(realNode).outerHeight()<=8 || $(realNode).outerWidth()<=8){
+                return true;
+            }
+            node = node.parent();
+        }
+        return false;
+    }
+
 
     function updateFocus() {
         var node = $(':focus');
@@ -145,6 +156,8 @@ var NerdeFocus = (function () {
                 $('#nerdeFocusRoot ol').append('<li>Focus Lost</li>');
             }
             $(currentFocus).addClass('nerdeFocus');
+
+            if(isVisuallyHidden($(currentFocus))){$("body").addClass("nerdeFocusHidden");}
             $('#nerdeFocusRoot strong').html(getPath($(currentFocus)));
             $("body").addClass("nerdeInTransition");
             $('#nerdeFocusOverlay').css('left', ($(currentFocus).offset().left) + 'px').css('top', ($(currentFocus).offset().top) + 'px').css('width', $(currentFocus).outerWidth() + 'px').css('height', $(currentFocus).outerHeight() + 'px');
@@ -152,6 +165,9 @@ var NerdeFocus = (function () {
             $('#nerdeFocusRoot strong').html('Focus Reset!');
         }
     }
+
+    /* https://rawgit.com/wizzyfx/nerdefocus/master/dist/nerde.min.css */
+    /* https://uk-serve.net/apps/nerde/nerde.css */
 
     getResource('https://rawgit.com/wizzyfx/nerdefocus/master/dist/nerde.min.css', function () {
         if (window.jQuery) {
