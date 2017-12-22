@@ -7,28 +7,36 @@
 
 var NerdeFocus = (function () {
     "use strict";
-    var currentFocus;
 
     function main() {
-        if($("#nerdeFocusRoot").length===0){
-            $("body").append("<section id=\"nerdeFocusRoot\"><ol></ol><strong></strong></section>");
-            $("body").append("<div id=\"nerdeFocusOverlay\"></div>");
+        currentFocus = $(document.activeElement);
+        nerdeBody = $("body");
 
-            $("#nerdeFocusRoot strong").click(function () {
-                $('#nerdeFocusRoot ol').toggle();
-            });
+        nerdeBody.append('<section id="nerdeFocusRoot"><ol></ol><strong></strong></section><div id="nerdeFocusOverlay"></div>');
 
+        nerdeRoot = $("#nerdeFocusRoot");
+        nerdeOverlay = $("#nerdeFocusOverlay");
+        nerdeStatus = $("#nerdeFocusRoot strong");
+        nerdeList = $('#nerdeFocusRoot ol');
 
-            $("#nerdeFocusOverlay").on('transitionend webkitTransitionEnd oTransitionEnd', function () {
-                $("body").removeClass("nerdeInTransition");
-            });
+        nerdeStatus.click(function () {
+            nerdeList.toggle();
+        });
 
+        nerdeOverlay.on('transitionend webkitTransitionEnd oTransitionEnd', function () {
+            nerdeBody.removeClass("nerdeInTransition");
+        });
+
+        updateFocus();
+        document.addEventListener("focus", function () {
             updateFocus();
+        }, true);
 
-            document.addEventListener("focus", function () {
+        setInterval(function () {
+            if (currentFocus[0].localName !== "body" && $(document.activeElement)[0].localName === "body") {
                 updateFocus();
-            }, true);
-        }
+            }
+        }, 1000);
     }
 
     /**
@@ -138,7 +146,7 @@ var NerdeFocus = (function () {
     function isVisuallyHidden(node) {
         while (node.length) {
             var realNode = node[0];
-            if($(realNode).outerHeight()<=8 || $(realNode).outerWidth()<=8){
+            if ($(realNode).outerHeight() <= 8 || $(realNode).outerWidth() <= 8) {
                 return true;
             }
             node = node.parent();
@@ -146,68 +154,63 @@ var NerdeFocus = (function () {
         return false;
     }
 
-    function isInViewPort(node) {
-        var elementTop = $(node).offset().top;
-        var elementLeft = $(node).offset().left;
-        var elementBottom = elementTop + $(node).outerHeight();
-        var elementRight = elementLeft + $(node).outerWidth();
-        var viewportTop = $(window).scrollTop();
-        var viewportBottom = viewportTop + $(window).height();
-        var viewportRight = $(window).width();
-        return elementBottom > viewportTop && elementTop < viewportBottom && elementRight > 0 && elementLeft < viewportRight;
-    };
-
-
     function updateFocus() {
-        var node = $(':focus');
-        if (node.length) {
-            $(currentFocus).removeClass('nerdeFocus');
+        var node = $(document.activeElement);
+
+        if (node) {
+            currentFocus.removeClass('nerdeFocus');
             currentFocus = node;
-
-            if (typeof getPath($(currentFocus)) != 'undefined') {
-                $('#nerdeFocusRoot ol').append('<li>' + getPath($(currentFocus)) + '</li>');
+            if (currentFocus[0].localName === "body") {
+                nerdeRoot.addClass('reset');
             } else {
-                $('#nerdeFocusRoot ol').append('<li>Focus Lost</li>');
-            }
-            $(currentFocus).addClass('nerdeFocus');
-
-            $('#nerdeFocusRoot strong').html(getPath($(currentFocus)));
-
-            $("body").addClass("nerdeInTransition");
-
-            var elementTop = $(currentFocus).offset().top;
-            var elementLeft = $(currentFocus).offset().left;
-            var elementBottom = elementTop + $(currentFocus).outerHeight();
-            var elementRight = elementLeft + $(currentFocus).outerWidth();
-            var viewportTop = $(window).scrollTop();
-            var viewportBottom = viewportTop + $(window).height();
-            var viewportRight = $(window).width();
-
-            if(isVisuallyHidden($(currentFocus)) || !(elementBottom > viewportTop && elementTop < viewportBottom && elementRight > 0 && elementLeft < viewportRight)){
-                $("body").addClass("nerdeFocusHidden");
+                nerdeRoot.removeClass('reset');
             }
 
-            if(elementLeft > viewportRight){elementLeft = viewportRight;}
-            if(elementTop > viewportBottom){elementTop = viewportBottom;}
+            currentFocus.addClass('nerdeFocus');
+            nerdeList.append('<li>' + getPath(currentFocus) + '</li>').scrollTop(999999);
+            nerdeStatus.html(getPath(currentFocus));
 
-            $('#nerdeFocusOverlay').css('left', elementLeft + 'px').css('top', elementTop + 'px').css('width', $(currentFocus).outerWidth() + 'px').css('height', $(currentFocus).outerHeight() + 'px');
+            nerdeBody.addClass("nerdeInTransition");
 
-        } else {
-            $('#nerdeFocusRoot strong').html('Focus Reset!');
+            var elementTop = currentFocus.offset().top;
+            var elementLeft = currentFocus.offset().left;
+            var elementBottom = elementTop + currentFocus.outerHeight();
+            var elementRight = elementLeft + currentFocus.outerWidth();
+            var viewportBottom = $('body').outerHeight();
+            var viewportRight = $('body').outerWidth();
+
+
+            if (isVisuallyHidden($(currentFocus)) || elementBottom < 0 || elementTop > viewportBottom || elementRight < 0 || elementLeft > viewportRight) {
+                nerdeBody.addClass("nerdeFocusHidden");
+            } else {
+                nerdeBody.removeClass("nerdeFocusHidden");
+            }
+
+            if (elementLeft > viewportRight) {
+                elementLeft = viewportRight;
+            }
+            if (elementTop > viewportBottom) {
+                elementTop = viewportBottom;
+            }
+
+            nerdeOverlay.css('left', elementLeft + 'px').css('top', elementTop + 'px').css('width', currentFocus.outerWidth() + 'px').css('height', currentFocus.outerHeight() + 'px');
         }
     }
 
     /* https://rawgit.com/wizzyfx/nerdefocus/master/dist/nerde.min.css */
     /* https://uk-serve.net/apps/nerde/nerde.css */
 
-    getResource('https://rawgit.com/wizzyfx/nerdefocus/master/dist/nerde.min.css', function () {
-        if (window.jQuery) {
-            main();
-        } else {
-            getResource('https://code.jquery.com/jquery-2.2.4.min.js', function () {
+    if (!document.getElementById('nerdeFocusRoot')) {
+        var currentFocus, nerdeRoot, nerdeOverlay, nerdeStatus, nerdeList, nerdeBody;
+        getResource('https://rawgit.com/wizzyfx/nerdefocus/master/dist/nerde.min.css', function () {
+            if (window.jQuery) {
                 main();
-            });
-        }
-    }, 'css');
+            } else {
+                getResource('https://code.jquery.com/jquery-3.2.1.slim.min.js', function () {
+                    main();
+                });
+            }
+        }, 'css');
+    }
 
 })();
