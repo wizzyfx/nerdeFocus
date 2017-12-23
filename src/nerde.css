@@ -46,19 +46,30 @@
     cursor: pointer;
 }
 
+#nerdeFocusRoot strong em{
+    display: inline-block;
+    font-style: normal;
+    font-weight: normal;
+    background-color: rgba(0,0,0,0.2);
+    padding: 0.2em;
+    font-size: 95%;
+    border-radius: 0.5em;
+    margin-left: 1em;
+}
+
 #nerdeFocusRoot.reset{
     background-color: #560d0c;
 }
 
 #nerdeFocusOverlay{
-    display:none;
+
     background: none;
     position: absolute;
     top: 0;
     left: 0;
     width: 0;
     height: 0;
-    outline: 0.25em solid rgba(255,0,0,0.5);
+    outline: 0.25rem solid rgba(255,0,0,0.5);
     outline-offset:0.1rem;
     z-index: 9999997;
     transition: top 0.25s ease-in-out, left 0.25s ease-in-out, width 0.25s ease-in-out, height 0.25s ease-in-out;
@@ -66,12 +77,12 @@
 }
 
 body.nerdeInTransition #nerdeFocusOverlay{
-    display:block!important;
+    outline: 0.25rem solid rgba(255,0,0,0.5);
     pointer-events:none!important;
 }
 
 body.nerdeFocusHidden #nerdeFocusOverlay{
-    display:block!important;
+    outline: 0.25rem solid rgba(255,0,0,0.5);
     background: none!important;
     pointer-events:none!important;
 }

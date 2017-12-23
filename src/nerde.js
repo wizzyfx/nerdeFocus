@@ -4,7 +4,6 @@
  * @author Ugurcan (Ugi) Kutluoglu <ugurcank@gmail.com>
  */
 
-
 var NerdeFocus = (function () {
     "use strict";
 
@@ -146,7 +145,7 @@ var NerdeFocus = (function () {
     function isVisuallyHidden(node) {
         while (node.length) {
             var realNode = node[0];
-            if ($(realNode).outerHeight() <= 8 || $(realNode).outerWidth() <= 8) {
+            if (($(realNode).outerHeight() <= 8 || $(realNode).outerWidth() <= 8) && ($(realNode).css('overflow')=='hidden' || $(realNode).css('overflow-x')=='hidden' || $(realNode).css('overflow-y')=='hidden')) {
                 return true;
             }
             node = node.parent();
@@ -160,15 +159,19 @@ var NerdeFocus = (function () {
         if (node) {
             currentFocus.removeClass('nerdeFocus');
             currentFocus = node;
+
+            currentFocus.addClass('nerdeFocus');
+
+            var focusPath=getPath(currentFocus);
+            nerdeStatus.html(focusPath);
+            nerdeList.append('<li>' + focusPath + '</li>').scrollTop(999999);
+
             if (currentFocus[0].localName === "body") {
                 nerdeRoot.addClass('reset');
+                nerdeStatus.append('<em>⚠️ Focus Reset!</em>');
             } else {
                 nerdeRoot.removeClass('reset');
             }
-
-            currentFocus.addClass('nerdeFocus');
-            nerdeList.append('<li>' + getPath(currentFocus) + '</li>').scrollTop(999999);
-            nerdeStatus.html(getPath(currentFocus));
 
             nerdeBody.addClass("nerdeInTransition");
 
@@ -176,12 +179,12 @@ var NerdeFocus = (function () {
             var elementLeft = currentFocus.offset().left;
             var elementBottom = elementTop + currentFocus.outerHeight();
             var elementRight = elementLeft + currentFocus.outerWidth();
-            var viewportBottom = $('body').outerHeight();
-            var viewportRight = $('body').outerWidth();
-
+            var viewportBottom = nerdeBody.outerHeight();
+            var viewportRight = nerdeBody.outerWidth();
 
             if (isVisuallyHidden($(currentFocus)) || elementBottom < 0 || elementTop > viewportBottom || elementRight < 0 || elementLeft > viewportRight) {
                 nerdeBody.addClass("nerdeFocusHidden");
+                nerdeStatus.append('<em>⚠️ May be Hidden or Off Screen</em>');
             } else {
                 nerdeBody.removeClass("nerdeFocusHidden");
             }
@@ -189,6 +192,7 @@ var NerdeFocus = (function () {
             if (elementLeft > viewportRight) {
                 elementLeft = viewportRight;
             }
+
             if (elementTop > viewportBottom) {
                 elementTop = viewportBottom;
             }
