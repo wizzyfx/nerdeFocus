@@ -16,7 +16,11 @@ javascript:(function(){document.body.appendChild(document.createElement('script'
 
 When loaded, NerdeFocus will be placed on the bottom center of the web page. It displays the CSS path of the currently selected element. Clicking on the path expands the focus history.
 
-[Screenshot 1](https://wizzyfx.s3.amazonaws.com/ss/201712162cw.png) | [Screenshot 2](https://wizzyfx.s3.amazonaws.com/ss/2017123ciq2.png)
+![Screenshot showing CSS path feature](https://wizzyfx.s3.amazonaws.com/ss/201801ygsn4.png)
+
+![Screenshot showing focus history feature](https://wizzyfx.s3.amazonaws.com/ss/201801mnf8d.png)
+
+![Screenshot showing off-screen detection feature](https://wizzyfx.s3.amazonaws.com/ss/201801x49r6.png)
 ## Authors
 
 * **Ugi Kutluoglu** - *Initial work*
