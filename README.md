@@ -20,7 +20,7 @@ When loaded, NerdeFocus will be placed on the bottom center of the web page. It 
 --
 ![Screenshot showing focus history feature](https://wizzyfx.s3.amazonaws.com/ss/201801mnf8d.png)
 --
-![Screenshot showing off-screen detection feature](https://wizzyfx.s3.amazonaws.com/ss/201801x182k.png)
+![Screenshot showing focus reset detection feature](https://wizzyfx.s3.amazonaws.com/ss/201801x182k.png)
 --
 ![Screenshot showing off-screen detection feature](https://wizzyfx.s3.amazonaws.com/ss/201801x49r6.png)
 ## Authors
