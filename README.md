@@ -1,6 +1,6 @@
 # NerdeFocus Bookmarklet
 
-NerdeFocus is a quick way to debug focus problems when testing a page for accessibility issues. When activated, it will animate and accentuate the focus ring and display the CSS selector of the currently focused item.
+NerdeFocus is a quick way to debug focus problems when testing a page for accessibility issues. When activated, it will animate and accentuate the focus ring and display the CSS selector of the currently focused item. NerdeFocus will alert you when there is a focus reset, and when the focus indicator is hidden or off-screen.
 
 ## Installing
 
